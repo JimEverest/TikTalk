@@ -41,7 +41,8 @@ class ConfigWindow:
         
         # 从config中读取当前配置
         config = configparser.ConfigParser(interpolation=None)  # Disable interpolation
-        config.read('config.ini', encoding='utf-8')
+        config_path = pkg_resources.resource_filename('TikTalk', 'config.ini')
+        config.read(config_path, encoding='utf-8')
         current_model = config.get('GenAI', 'model', fallback='o1-all')
         
         # 模型选择
@@ -112,7 +113,8 @@ class ConfigWindow:
 
     def save_config(self):
         config = configparser.ConfigParser(interpolation=None)  # Disable interpolation
-        config.read('config.ini', encoding='utf-8')
+        config_path = pkg_resources.resource_filename('TikTalk', 'config.ini')
+        config.read(config_path, encoding='utf-8')
         
         if 'GenAI' not in config:
             config['GenAI'] = {}
@@ -128,7 +130,7 @@ class ConfigWindow:
         config['Defaults']['default_notes'] = self.notes_text.get(1.0, tk.END).strip()
         
         # 写入配置文件
-        with open('config.ini', 'w', encoding='utf-8') as f:
+        with open(config_path, 'w', encoding='utf-8') as f:
             config.write(f)
         
         self.window.destroy()
@@ -756,15 +758,8 @@ Additional Notes:
     def load_config(self):
         """加载配置"""
         try:
+            config_path = pkg_resources.resource_filename('TikTalk', 'config.ini')
             config = configparser.ConfigParser(interpolation=None)
-            
-            # 首先尝试从当前目录加载
-            if os.path.exists('config.ini'):
-                config_path = 'config.ini'
-            else:
-                # 如果当前目录没有，则从包资源加载
-                config_path = pkg_resources.resource_filename('TikTalk', 'config.ini')
-            
             config.read(config_path, encoding='utf-8')
             
             # 确保必要的配置节存在
@@ -789,9 +784,10 @@ Additional Notes:
             if not self.notes_text.get(1.0, tk.END).strip():
                 self.notes_text.delete(1.0, tk.END)
                 self.notes_text.insert(tk.END, self.default_notes)
-            
+            return config
         except Exception as e:
-            print(f"加载配置出错: {str(e)}")
+            print(f"Failed to load config: {e}")
+            return None
 
     def show_config(self):
         """显示配置窗口"""
@@ -805,10 +801,7 @@ Additional Notes:
         
         # 读取配置
         config = configparser.ConfigParser(interpolation=None)
-        if os.path.exists('config.ini'):
-            config_path = 'config.ini'
-        else:
-            config_path = pkg_resources.resource_filename('TikTalk', 'config.ini')
+        config_path = pkg_resources.resource_filename('TikTalk', 'config.ini')
         config.read(config_path, encoding='utf-8')
         
         # 确保必要的配置节存在
@@ -936,7 +929,8 @@ Additional Notes:
             config.set('Defaults', 'default_notes', notes_text.get("1.0", tk.END).strip())
             
             # 保存配置到文件
-            with open('config.ini', 'w', encoding='utf-8') as f:
+            config_path = pkg_resources.resource_filename('TikTalk', 'config.ini')
+            with open(config_path, 'w', encoding='utf-8') as f:
                 config.write(f)
             
             # 重新加载配置
@@ -1469,14 +1463,8 @@ class LiveCaptionCapture:
 
 def load_config():
     try:
-        # 首先尝试从当前目录加载
-        if os.path.exists('config.ini'):
-            config_path = 'config.ini'
-        else:
-            # 如果当前目录没有，则从包资源加载
-            config_path = pkg_resources.resource_filename('TikTalk', 'config.ini')
-        
         config = configparser.ConfigParser(interpolation=None)
+        config_path = pkg_resources.resource_filename('TikTalk', 'config.ini')
         config.read(config_path, encoding='utf-8')
         return config
     except Exception as e:

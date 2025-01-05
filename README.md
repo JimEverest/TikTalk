@@ -1,4 +1,4 @@
-# Live Caption Assistant
+# TikTalk - Live Talking Assistant
 
 ## Overview
 This project is a sophisticated desktop application designed to capture, process, and analyze live captions with integrated AI assistance capabilities. It's particularly useful for interview scenarios, meetings, and other situations requiring real-time caption analysis.

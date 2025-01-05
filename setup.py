@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="tiktalk",
-    version="0.1.0",
+    version="0.1.1",
     author="JimEverest",
     author_email="your.email@example.com",
     description="A sophisticated desktop application for capturing and analyzing live captions with AI assistance",

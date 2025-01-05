@@ -4,12 +4,23 @@ import requests
 import json
 import base64
 import configparser
+import pkg_resources
 
-_config = configparser.ConfigParser()
+_config = configparser.ConfigParser(interpolation=None)
 # need parent folder!
-config_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), 'config.ini')
+config_path = pkg_resources.resource_filename('TikTalk', 'config.ini')
 print(config_path)
 _config.read(config_path, encoding='utf-8')
+
+# # 确保必要的配置节存在
+# if 'Endpoints' not in _config:
+#     _config['Endpoints'] = {
+#         'endpoints': 'aigcbest,adamchatbot,gptapi',
+#         'current': 'adamchatbot'
+#     }
+#     # 保存配置到文件
+#     with open(config_path, 'w', encoding='utf-8') as f:
+#         _config.write(f)
 
 # open ai
 OPENAI_TOKEN = os.getenv('OPENAI_TOKEN',_config['GenAI'].get('OPENAI_TOKEN'))
@@ -28,9 +39,11 @@ HEAD_TOKEN_KEY = os.getenv('HEAD_TOKEN_KEY',_config['GenAI'].get('HEAD_TOKEN_KEY
 # 实现ask函数
 def ask(msgs):
     # 读取当前选择的endpoint
-    config = configparser.ConfigParser()
-    config.read('config.ini', encoding='utf-8')
-    
+    config = configparser.ConfigParser(interpolation=None)
+    config.read(config_path, encoding='utf-8')
+    print("*"*100)
+    print(config) #<configparser.ConfigParser object at 0x000001FB346B3EB0> ？
+    print("*"*100)
     current_endpoint = config.get('Endpoints', 'current')
     endpoint_section = f'Endpoint_{current_endpoint}'
     
@@ -134,10 +147,10 @@ def ask_on_images(token, img_pths=[], prompt="" ):
 
 def ask_with_msgs(token, msgs):
     # 从配置文件读取当前模型设置
-    config = configparser.ConfigParser()
-    config.read('config.ini', encoding='utf-8')
-    current_model = config.get('GenAI', 'model', fallback='o1-all')
-    
+    config = configparser.ConfigParser(interpolation=None)
+    config.read(config_path, encoding='utf-8')
+    # current_model = config.get('GenAI', 'model', fallback='o1-all')
+    current_model = config.get('GenAI', 'model')
     payload = json.dumps({
         "model": current_model,  # 使用配置中的模型设置
         "messages": msgs,
