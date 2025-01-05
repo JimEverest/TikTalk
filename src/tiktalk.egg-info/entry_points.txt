@@ -1,0 +1,2 @@
+[console_scripts]
+tiktalk = TikTalk.capture:main

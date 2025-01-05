@@ -1,0 +1,5 @@
+src/TikTalk/__pycache__/gpt4o.cpython-39.pyc
+*.pyc
+*.pyo
+*.pyd
+dist/*.*

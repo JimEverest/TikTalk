@@ -1,0 +1,14 @@
+README.md
+pyproject.toml
+setup.py
+src/TikTalk/__init__.py
+src/TikTalk/capture copy 2.py
+src/TikTalk/capture.py
+src/TikTalk/config.ini
+src/TikTalk/gpt4o.py
+src/tiktalk.egg-info/PKG-INFO
+src/tiktalk.egg-info/SOURCES.txt
+src/tiktalk.egg-info/dependency_links.txt
+src/tiktalk.egg-info/entry_points.txt
+src/tiktalk.egg-info/requires.txt
+src/tiktalk.egg-info/top_level.txt
